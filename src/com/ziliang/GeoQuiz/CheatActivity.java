@@ -46,7 +46,7 @@ public class CheatActivity extends Activity {
         });
         if (savedInstanceState != null) {
             answerShown = savedInstanceState.getBoolean(CHEAT_STATUS);
-            setAnswerShownResult(true);
+            setAnswerShownResult(answerShown);
         }
     }
 
