@@ -15,5 +15,5 @@
     <string name="cheat_button">Cheat!</string>
     <string name="warning_text">Are you sure you want to do this?</string>
     <string name="show_answer_button">Show Answer</string>
-    <string name="judgement_toast">You Cheated!</string>
+    <string name="judgement_toast">You have cheated on this one!</string>
 </resources>

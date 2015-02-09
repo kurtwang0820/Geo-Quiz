@@ -2,6 +2,7 @@ package com.ziliang.GeoQuiz;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,17 +12,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class QuizActivity extends Activity {
-    private boolean mIsCheater;
+//    private boolean mIsCheater;
     private Button mTrueButton;
     private Button mFalseButton;
     private ImageButton mNextButton;
     private ImageButton mPrevButton;
     private Button mCheatButton;
     private TextView mQuestionTextView;
+    private TextView apiLevel;
     private TrueFalse[] mQuestionBank = new TrueFalse[]{new TrueFalse(R.string.question_africa, false), new TrueFalse(R.string.question_america, true), new TrueFalse(R.string.question_asia, true), new TrueFalse(R.string.question_mideast, false), new TrueFalse(R.string.question_ocean, true)};
+    private boolean[] cheatQuestion=new boolean[mQuestionBank.length];
     private int mCurrentIndex = 0;
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
+    private static final String CHEAT_STATUS="cheated";
 
     /**
      * Called when the activity is first created.
@@ -34,6 +38,9 @@ public class QuizActivity extends Activity {
         mFalseButton = (Button) findViewById(R.id.false_button);
         mTrueButton = (Button) findViewById(R.id.true_button);
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
+        apiLevel=(TextView)findViewById(R.id.api_level);
+        int apiLevelInt=Build.VERSION.SDK_INT;
+        apiLevel.setText("API Level: "+apiLevelInt);
         mNextButton = (ImageButton) findViewById(R.id.next_button);
         mPrevButton = (ImageButton) findViewById(R.id.prev_button);
         mCheatButton = (Button) findViewById(R.id.cheat_button);
@@ -52,7 +59,7 @@ public class QuizActivity extends Activity {
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mIsCheater = false;
+//                mIsCheater = false;
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
                 updateQuestion();
             }
@@ -60,7 +67,7 @@ public class QuizActivity extends Activity {
         mPrevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mIsCheater = false;
+//                mIsCheater = false;
                 mCurrentIndex--;
                 if (mCurrentIndex < 0) {
                     mCurrentIndex = mQuestionBank.length - 1;
@@ -86,6 +93,7 @@ public class QuizActivity extends Activity {
         });
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX);
+            cheatQuestion=savedInstanceState.getBooleanArray(CHEAT_STATUS);
         }
         updateQuestion();
     }
@@ -95,6 +103,7 @@ public class QuizActivity extends Activity {
         super.onSaveInstanceState(savedInstanceState);
         Log.i(TAG, "onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
+        savedInstanceState.putBooleanArray(CHEAT_STATUS, cheatQuestion);
     }
 
     private void updateQuestion() {
@@ -105,7 +114,7 @@ public class QuizActivity extends Activity {
     private void checkAnswer(boolean userPressedTrue) {
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].ismTrueQuestion();
         int messageResId = 0;
-        if (mIsCheater) {
+        if (cheatQuestion[mCurrentIndex]) {
             messageResId = R.string.judgement_toast;
         } else {
             if (userPressedTrue == answerIsTrue) {
@@ -123,7 +132,7 @@ public class QuizActivity extends Activity {
         if (data == null) {
             return;
         }
-        mIsCheater = data.getBooleanExtra(CheatActivity.EXTRA_ANSWER_SHOWN, false);
+        cheatQuestion[mCurrentIndex] |= data.getBooleanExtra(CheatActivity.EXTRA_ANSWER_SHOWN, false);
     }
 
     @Override
