@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class QuizActivity extends Activity {
-//    private boolean mIsCheater;
     private Button mTrueButton;
     private Button mFalseButton;
     private ImageButton mNextButton;
@@ -23,7 +22,7 @@ public class QuizActivity extends Activity {
     private TrueFalse[] mQuestionBank = new TrueFalse[]{new TrueFalse(R.string.question_africa, false), new TrueFalse(R.string.question_america, true), new TrueFalse(R.string.question_asia, true), new TrueFalse(R.string.question_mideast, false), new TrueFalse(R.string.question_ocean, true)};
     private boolean[] cheatQuestion=new boolean[mQuestionBank.length];
     private int mCurrentIndex = 0;
-    private static final String TAG = "QuizActivity";
+//    private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
     private static final String CHEAT_STATUS="cheated";
 
@@ -33,7 +32,7 @@ public class QuizActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "OnCreate(Bundle) called");
+//        Log.d(TAG, "OnCreate(Bundle) called");
         setContentView(R.layout.main);
         mFalseButton = (Button) findViewById(R.id.false_button);
         mTrueButton = (Button) findViewById(R.id.true_button);
@@ -59,7 +58,6 @@ public class QuizActivity extends Activity {
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mIsCheater = false;
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
                 updateQuestion();
             }
@@ -67,7 +65,6 @@ public class QuizActivity extends Activity {
         mPrevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mIsCheater = false;
                 mCurrentIndex--;
                 if (mCurrentIndex < 0) {
                     mCurrentIndex = mQuestionBank.length - 1;
@@ -98,10 +95,11 @@ public class QuizActivity extends Activity {
         updateQuestion();
     }
 
+    //save current index and if the user has cheated when a device rotation happens
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        Log.i(TAG, "onSaveInstanceState");
+//        Log.i(TAG, "onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
         savedInstanceState.putBooleanArray(CHEAT_STATUS, cheatQuestion);
     }
@@ -138,24 +136,24 @@ public class QuizActivity extends Activity {
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause() called");
+//        Log.d(TAG, "onPause() called");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop() called");
+//        Log.d(TAG, "onStop() called");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume() called");
+//        Log.d(TAG, "onResume() called");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy() called");
+//        Log.d(TAG, "onDestroy() called");
     }
 }
